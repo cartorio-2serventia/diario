@@ -24,7 +24,7 @@
 html,body{margin:0;padding:0;}
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  font-size:15px; line-height:1.5; color:var(--texto);
+  font-size:17px; line-height:1.55; color:var(--texto);
   background:var(--creme); padding-bottom:40px;
   -webkit-text-size-adjust:100%;
 }
@@ -44,7 +44,7 @@ header .marca{
   display:flex;align-items:center;justify-content:center;
   font-family:'EB Garamond',serif;font-weight:700;color:var(--dourado);font-size:18px;
 }
-header h1{font-size:16px;margin:0;font-weight:600;line-height:1.25;}
+header h1{font-size:18px;margin:0;font-weight:600;line-height:1.25;}
 header h1 b{color:var(--dourado);}
 header .sub{font-size:11.5px;color:#cfc7b7;letter-spacing:.4px;text-transform:uppercase;margin-top:2px;}
 .atualizado{font-size:11px;color:#bdb6a6;margin-top:8px;}
@@ -63,8 +63,8 @@ header .sub{font-size:11.5px;color:#cfc7b7;letter-spacing:.4px;text-transform:up
 
 /* ---------- conteudo ---------- */
 main{padding:0 16px;max-width:680px;margin:0 auto;}
-.secao-tit{font-size:13px;letter-spacing:.6px;text-transform:uppercase;color:var(--suave);
-  margin:22px 4px 10px;font-weight:600;}
+.secao-tit{font-size:14px;letter-spacing:.6px;text-transform:uppercase;color:var(--suave);
+  margin:22px 4px 11px;font-weight:600;}
 
 /* botoes de categoria */
 .cards{display:flex;flex-direction:column;gap:12px;}
@@ -74,12 +74,12 @@ main{padding:0 16px;max-width:680px;margin:0 auto;}
   box-shadow:var(--sombra); cursor:pointer; transition:transform .08s;
 }
 .card:active{transform:scale(.985);}
-.card .ic{font-size:26px;width:34px;text-align:center;flex:0 0 auto;}
+.card .ic{font-size:28px;width:36px;text-align:center;flex:0 0 auto;}
 .card .tx{flex:1;min-width:0;}
-.card .tx .t{font-size:16px;font-weight:600;color:var(--grafite);}
-.card .tx .s{font-size:12.5px;color:var(--suave);margin-top:2px;}
+.card .tx .t{font-size:18.5px;font-weight:600;color:var(--grafite);}
+.card .tx .s{font-size:14px;color:var(--suave);margin-top:3px;}
 .card .num{
-  font-family:'EB Garamond',serif;font-weight:700;font-size:22px;color:var(--dourado-esc);
+  font-family:'EB Garamond',serif;font-weight:700;font-size:25px;color:var(--dourado-esc);
   background:var(--creme2);border:1px solid var(--linha);border-radius:10px;
   min-width:44px;text-align:center;padding:4px 8px;flex:0 0 auto;
 }
@@ -92,9 +92,9 @@ main{padding:0 16px;max-width:680px;margin:0 auto;}
   border:1px solid var(--linha);border-radius:12px;padding:13px 15px;margin-bottom:9px;
   box-shadow:var(--sombra);cursor:pointer;
 }
-.dia .d{font-weight:600;color:var(--grafite);font-size:15px;}
-.dia .dow{font-size:12px;color:var(--suave);text-transform:capitalize;}
-.dia .n{font-family:'EB Garamond',serif;font-weight:700;color:var(--dourado-esc);font-size:18px;}
+.dia .d{font-weight:600;color:var(--grafite);font-size:17px;}
+.dia .dow{font-size:14px;color:var(--suave);text-transform:capitalize;}
+.dia .n{font-family:'EB Garamond',serif;font-weight:700;color:var(--dourado-esc);font-size:21px;}
 
 /* publicacao */
 .pub{
@@ -102,25 +102,25 @@ main{padding:0 16px;max-width:680px;margin:0 auto;}
   box-shadow:var(--sombra);overflow:hidden;
 }
 .pub.cart{border:1.5px solid var(--alerta);}
-.pub .cab{padding:13px 15px 10px;border-bottom:1px dashed var(--linha);}
-.pub .org{font-weight:600;color:var(--grafite);font-size:14.5px;}
-.pub .meta{font-size:12px;color:var(--suave);margin-top:3px;}
-.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
-.bg{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid;}
+.pub .cab{padding:14px 16px 11px;border-bottom:1px dashed var(--linha);}
+.pub .org{font-weight:600;color:var(--grafite);font-size:17px;}
+.pub .meta{font-size:13.5px;color:var(--suave);margin-top:4px;}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;}
+.bg{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid;}
 .bg.reg{color:var(--dourado-esc);border-color:var(--dourado);background:var(--creme2);}
 .bg.cart{color:#fff;background:var(--alerta);border-color:var(--alerta);}
 .bg.font{color:var(--suave);border-color:var(--linha);background:#fbfaf7;}
-.pub .corpo{padding:12px 15px;font-size:14px;line-height:1.6;white-space:pre-wrap;
-  word-break:break-word;color:#403b34;max-height:130px;overflow:hidden;position:relative;}
+.pub .corpo{padding:13px 16px;font-size:16.5px;line-height:1.72;white-space:pre-wrap;
+  word-break:break-word;color:#3a352e;max-height:180px;overflow:hidden;position:relative;}
 .pub .corpo.aberto{max-height:none;}
 .pub .corpo:not(.aberto)::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46px;
   background:linear-gradient(180deg,rgba(255,255,255,0),#fff);}
 .vermais{display:block;width:100%;text-align:center;background:none;border:none;border-top:1px dashed var(--linha);
-  color:var(--dourado-esc);font-weight:600;font-size:13px;padding:9px;cursor:pointer;}
-.acoes{display:flex;gap:8px;padding:10px 12px;background:var(--creme2);border-top:1px solid var(--linha);}
+  color:var(--dourado-esc);font-weight:600;font-size:15px;padding:11px;cursor:pointer;}
+.acoes{display:flex;gap:8px;padding:11px 12px;background:var(--creme2);border-top:1px solid var(--linha);}
 .acoes button{
-  flex:1;border:1px solid var(--linha);background:#fff;border-radius:10px;padding:10px 6px;
-  font-size:13px;font-weight:600;color:var(--grafite);cursor:pointer;display:flex;
+  flex:1;border:1px solid var(--linha);background:#fff;border-radius:10px;padding:12px 6px;
+  font-size:15px;font-weight:600;color:var(--grafite);cursor:pointer;display:flex;
   align-items:center;justify-content:center;gap:6px;
 }
 .acoes button:active{background:var(--creme2);}
@@ -128,10 +128,10 @@ main{padding:0 16px;max-width:680px;margin:0 auto;}
 
 /* barra de voltar */
 .voltar{display:flex;align-items:center;gap:8px;background:none;border:none;color:var(--dourado-esc);
-  font-size:14px;font-weight:600;padding:14px 4px 4px;cursor:pointer;}
-.titulo-pagina{font-size:19px;font-weight:600;color:var(--grafite);margin:4px 4px 0;}
-.titulo-pagina .sub{font-size:12.5px;color:var(--suave);font-weight:400;margin-top:2px;}
-.vazio{text-align:center;color:var(--suave);padding:40px 20px;font-size:14px;}
+  font-size:16px;font-weight:600;padding:14px 4px 4px;cursor:pointer;}
+.titulo-pagina{font-size:22px;font-weight:600;color:var(--grafite);margin:4px 4px 0;}
+.titulo-pagina .sub{font-size:14.5px;color:var(--suave);font-weight:400;margin-top:3px;}
+.vazio{text-align:center;color:var(--suave);padding:40px 20px;font-size:16px;}
 .carregando{text-align:center;color:var(--suave);padding:30px;font-size:14px;}
 footer{text-align:center;color:var(--suave2);font-size:11px;padding:26px 16px;}
 .toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:var(--grafite);
@@ -160,9 +160,8 @@ footer{text-align:center;color:var(--suave2);font-size:11px;padding:26px 16px;}
 <script>
 const CATS = [
   {key:'extrajudicial',      ic:'🏛️', t:'Extrajudicial — Corregedoria', s:'Caderno administrativo do foro extrajudicial'},
-  {key:'judicial_bomjesus',  ic:'⚖️', t:'Judicial — Bom Jesus',          s:'TUDO do Judiciário na comarca de Bom Jesus'},
-  {key:'judicial_serventia', ic:'📑', t:'Judicial — Serventia Extrajud.', s:'Outras comarcas citando serventia extrajudicial'},
-  {key:'fermojupi',          ic:'💰', t:'FERMOJUPI',                      s:'Tudo que envolve o FERMOJUPI'},
+  {key:'judicial_bomjesus',  ic:'⚖️', t:'Judicial — Bom Jesus',          s:'TODO o Judiciário da comarca de Bom Jesus'},
+  {key:'fermojupi',          ic:'💰', t:'FERMOJUPI',                      s:'Publicações que envolvem o FERMOJUPI'},
 ];
 const CAT_MAP = Object.fromEntries(CATS.map(c=>[c.key,c]));
 const app = document.getElementById('app');
