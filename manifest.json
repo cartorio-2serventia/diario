@@ -1,0 +1,15 @@
+{
+  "name": "2ª Serventia de Bom Jesus/PI — Acompanhamento PJE-TJPI",
+  "short_name": "2ª Serventia BJ",
+  "description": "Acompanhamento das publicações do Diário de Justiça do PI (extrajudicial, FERMOJUPI e judicial de Bom Jesus).",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FBF8F2",
+  "theme_color": "#2D2D2D",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "icone.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2D2D2D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="2ª Serventia BJ">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icone.png">
+<title>2ª Serventia de Bom Jesus/PI — Acompanhamento PJE-TJPI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grafite:#2D2D2D; --grafite2:#222; --dourado:#B89653; --dourado-esc:#8f7536;
+  --creme:#FBF8F2; --creme2:#faf6ee; --linha:#e9e3d6; --texto:#3a3631;
+  --suave:#7c756a; --suave2:#a39b8c; --alerta:#a4322a; --alerta-bg:#fbeae8;
+  --ok:#5a7a4e; --sombra:0 2px 10px rgba(45,45,45,.10);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:15px; line-height:1.5; color:var(--texto);
+  background:var(--creme); padding-bottom:40px;
+  -webkit-text-size-adjust:100%;
+}
+.serif{font-family:'EB Garamond',Garamond,Georgia,serif;}
+
+/* ---------- topo ---------- */
+header{
+  position:sticky; top:0; z-index:50;
+  background:linear-gradient(180deg,var(--grafite),var(--grafite2));
+  color:var(--creme); padding:calc(env(safe-area-inset-top) + 14px) 16px 14px;
+  border-bottom:3px solid var(--dourado); box-shadow:var(--sombra);
+}
+header .top{display:flex;align-items:center;gap:12px;}
+header .marca{
+  width:42px;height:42px;border-radius:50%;flex:0 0 auto;
+  border:2px solid var(--dourado);background:#1c1c1c;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'EB Garamond',serif;font-weight:700;color:var(--dourado);font-size:18px;
+}
+header h1{font-size:16px;margin:0;font-weight:600;line-height:1.25;}
+header h1 b{color:var(--dourado);}
+header .sub{font-size:11.5px;color:#cfc7b7;letter-spacing:.4px;text-transform:uppercase;margin-top:2px;}
+.atualizado{font-size:11px;color:#bdb6a6;margin-top:8px;}
+
+/* ---------- alerta cartorio ---------- */
+.alerta{
+  margin:14px 16px 0; background:var(--alerta-bg); border:1.5px solid var(--alerta);
+  border-radius:12px; padding:12px 14px; color:var(--alerta);
+  display:flex;align-items:center;gap:10px; cursor:pointer; box-shadow:var(--sombra);
+  animation:pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(164,50,42,.0)}50%{box-shadow:0 0 0 6px rgba(164,50,42,.10)}}
+.alerta .sino{font-size:22px;}
+.alerta b{font-weight:700;}
+.alerta small{display:block;color:#7d3a35;font-weight:400;}
+
+/* ---------- conteudo ---------- */
+main{padding:0 16px;max-width:680px;margin:0 auto;}
+.secao-tit{font-size:13px;letter-spacing:.6px;text-transform:uppercase;color:var(--suave);
+  margin:22px 4px 10px;font-weight:600;}
+
+/* botoes de categoria */
+.cards{display:flex;flex-direction:column;gap:12px;}
+.card{
+  display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--linha);
+  border-left:5px solid var(--dourado); border-radius:14px; padding:16px 16px;
+  box-shadow:var(--sombra); cursor:pointer; transition:transform .08s;
+}
+.card:active{transform:scale(.985);}
+.card .ic{font-size:26px;width:34px;text-align:center;flex:0 0 auto;}
+.card .tx{flex:1;min-width:0;}
+.card .tx .t{font-size:16px;font-weight:600;color:var(--grafite);}
+.card .tx .s{font-size:12.5px;color:var(--suave);margin-top:2px;}
+.card .num{
+  font-family:'EB Garamond',serif;font-weight:700;font-size:22px;color:var(--dourado-esc);
+  background:var(--creme2);border:1px solid var(--linha);border-radius:10px;
+  min-width:44px;text-align:center;padding:4px 8px;flex:0 0 auto;
+}
+.card.salvos{border-left-color:#caa84e;}
+.card.salvos .num{color:#8f7536;}
+
+/* lista de dias */
+.dia{
+  display:flex;align-items:center;justify-content:space-between;background:#fff;
+  border:1px solid var(--linha);border-radius:12px;padding:13px 15px;margin-bottom:9px;
+  box-shadow:var(--sombra);cursor:pointer;
+}
+.dia .d{font-weight:600;color:var(--grafite);font-size:15px;}
+.dia .dow{font-size:12px;color:var(--suave);text-transform:capitalize;}
+.dia .n{font-family:'EB Garamond',serif;font-weight:700;color:var(--dourado-esc);font-size:18px;}
+
+/* publicacao */
+.pub{
+  background:#fff;border:1px solid var(--linha);border-radius:14px;margin-bottom:12px;
+  box-shadow:var(--sombra);overflow:hidden;
+}
+.pub.cart{border:1.5px solid var(--alerta);}
+.pub .cab{padding:13px 15px 10px;border-bottom:1px dashed var(--linha);}
+.pub .org{font-weight:600;color:var(--grafite);font-size:14.5px;}
+.pub .meta{font-size:12px;color:var(--suave);margin-top:3px;}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.bg{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid;}
+.bg.reg{color:var(--dourado-esc);border-color:var(--dourado);background:var(--creme2);}
+.bg.cart{color:#fff;background:var(--alerta);border-color:var(--alerta);}
+.bg.font{color:var(--suave);border-color:var(--linha);background:#fbfaf7;}
+.pub .corpo{padding:12px 15px;font-size:14px;line-height:1.6;white-space:pre-wrap;
+  word-break:break-word;color:#403b34;max-height:130px;overflow:hidden;position:relative;}
+.pub .corpo.aberto{max-height:none;}
+.pub .corpo:not(.aberto)::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46px;
+  background:linear-gradient(180deg,rgba(255,255,255,0),#fff);}
+.vermais{display:block;width:100%;text-align:center;background:none;border:none;border-top:1px dashed var(--linha);
+  color:var(--dourado-esc);font-weight:600;font-size:13px;padding:9px;cursor:pointer;}
+.acoes{display:flex;gap:8px;padding:10px 12px;background:var(--creme2);border-top:1px solid var(--linha);}
+.acoes button{
+  flex:1;border:1px solid var(--linha);background:#fff;border-radius:10px;padding:10px 6px;
+  font-size:13px;font-weight:600;color:var(--grafite);cursor:pointer;display:flex;
+  align-items:center;justify-content:center;gap:6px;
+}
+.acoes button:active{background:var(--creme2);}
+.acoes button.on{background:var(--dourado);color:#fff;border-color:var(--dourado);}
+
+/* barra de voltar */
+.voltar{display:flex;align-items:center;gap:8px;background:none;border:none;color:var(--dourado-esc);
+  font-size:14px;font-weight:600;padding:14px 4px 4px;cursor:pointer;}
+.titulo-pagina{font-size:19px;font-weight:600;color:var(--grafite);margin:4px 4px 0;}
+.titulo-pagina .sub{font-size:12.5px;color:var(--suave);font-weight:400;margin-top:2px;}
+.vazio{text-align:center;color:var(--suave);padding:40px 20px;font-size:14px;}
+.carregando{text-align:center;color:var(--suave);padding:30px;font-size:14px;}
+footer{text-align:center;color:var(--suave2);font-size:11px;padding:26px 16px;}
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:var(--grafite);
+  color:#fff;padding:11px 18px;border-radius:24px;font-size:13.5px;box-shadow:var(--sombra);
+  z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div class="marca serif">2ª</div>
+    <div>
+      <h1 class="serif">2ª Serventia de Bom Jesus/PI</h1>
+      <div class="sub">Acompanhamento PJE-TJPI</div>
+    </div>
+  </div>
+  <div class="atualizado" id="atualizado"></div>
+</header>
+
+<div id="alerta-box"></div>
+<main id="app"><div class="carregando">Carregando publicações…</div></main>
+<footer>Diário de Justiça do Piauí · projeto piloto · 2ª Serventia Extrajudicial de Tabelionato de Bom Jesus/PI</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+const CATS = [
+  {key:'extrajudicial',      ic:'🏛️', t:'Extrajudicial — Corregedoria', s:'Caderno administrativo do foro extrajudicial'},
+  {key:'judicial_bomjesus',  ic:'⚖️', t:'Judicial — Bom Jesus',          s:'TUDO do Judiciário na comarca de Bom Jesus'},
+  {key:'judicial_serventia', ic:'📑', t:'Judicial — Serventia Extrajud.', s:'Outras comarcas citando serventia extrajudicial'},
+  {key:'fermojupi',          ic:'💰', t:'FERMOJUPI',                      s:'Tudo que envolve o FERMOJUPI'},
+];
+const CAT_MAP = Object.fromEntries(CATS.map(c=>[c.key,c]));
+const app = document.getElementById('app');
+let INDICE = null;
+const cacheDia = {};
+
+const FAV_KEY = 'bj_salvos_v1';
+function favs(){ try{return JSON.parse(localStorage.getItem(FAV_KEY))||[];}catch(e){return [];} }
+function favSet(arr){ localStorage.setItem(FAV_KEY, JSON.stringify(arr)); }
+function isFav(id){ return favs().some(f=>f.id===id); }
+function toggleFav(pub){
+  let a=favs(); const i=a.findIndex(f=>f.id===pub.id);
+  if(i>=0){a.splice(i,1); toast('Removido dos salvos');}
+  else{a.unshift(pub); toast('⭐ Salvo');}
+  favSet(a); return i<0;
+}
+
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1600);
+}
+function esc(s){return (s||'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));}
+function dataBR(iso){const[a,m,d]=iso.split('-');return `${d}/${m}/${a}`;}
+
+async function carregarDia(iso){
+  if(cacheDia[iso]) return cacheDia[iso];
+  const r = await fetch('dias/'+iso+'.json',{cache:'no-store'});
+  const j = await r.json(); cacheDia[iso]=j; return j;
+}
+
+/* ---------------- HOME ---------------- */
+function home(){
+  window.scrollTo(0,0);
+  const tot={}; CATS.forEach(c=>tot[c.key]=0); let cart=0;
+  (INDICE.dias||[]).forEach(d=>{CATS.forEach(c=>tot[c.key]+=(d.contagem[c.key]||0)); cart+=(d.cartorio||0);});
+  let h = `<div class="secao-tit">Escolha um caderno</div><div class="cards">`;
+  CATS.forEach(c=>{
+    h += `<div class="card" onclick="abrirCategoria('${c.key}')">
+      <div class="ic">${c.ic}</div>
+      <div class="tx"><div class="t">${c.t}</div><div class="s">${c.s}</div></div>
+      <div class="num">${tot[c.key]}</div></div>`;
+  });
+  const ns = favs().length;
+  h += `<div class="card salvos" onclick="abrirSalvos()">
+      <div class="ic">⭐</div>
+      <div class="tx"><div class="t">Salvos</div><div class="s">Publicações que você guardou</div></div>
+      <div class="num">${ns}</div></div>`;
+  h += `</div>`;
+  app.innerHTML = h;
+  renderAlerta(cart);
+}
+
+function renderAlerta(cart){
+  const box=document.getElementById('alerta-box');
+  if(cart>0){
+    box.innerHTML = `<div class="alerta" onclick="abrirCartorio()">
+      <div class="sino">🚨</div>
+      <div><b>${cart} publicação(ões) citam o SEU cartório</b>
+      <small>2ª Serventia Extrajudicial de Tabelionato — toque para conferir</small></div></div>`;
+  } else { box.innerHTML=''; }
+}
+
+/* -------------- LISTA DE DIAS -------------- */
+function abrirCategoria(key){
+  window.scrollTo(0,0);
+  const c=CAT_MAP[key];
+  const dias=(INDICE.dias||[]).filter(d=>(d.contagem[key]||0)>0);
+  let h=`<button class="voltar" onclick="home()">‹ Início</button>
+    <div class="titulo-pagina">${c.ic} ${c.t}<div class="sub">${c.s}</div></div>
+    <div class="secao-tit">Toque em um dia</div>`;
+  if(!dias.length){ h+=`<div class="vazio">Sem publicações neste caderno nos últimos dias.</div>`; }
+  dias.forEach(d=>{
+    h+=`<div class="dia" onclick="abrirDia('${key}','${d.data}')">
+      <div><div class="d">${dataBR(d.data)}</div><div class="dow">${d.dia_semana}</div></div>
+      <div class="n">${d.contagem[key]}</div></div>`;
+  });
+  app.innerHTML=h;
+}
+
+/* -------------- PUBLICACOES DO DIA -------------- */
+async function abrirDia(key,iso){
+  window.scrollTo(0,0);
+  const c=CAT_MAP[key];
+  app.innerHTML=`<button class="voltar" onclick="abrirCategoria('${key}')">‹ ${c.t}</button>
+    <div class="titulo-pagina">${dataBR(iso)}<div class="sub">${c.t}</div></div>
+    <div class="carregando">Carregando…</div>`;
+  let dia;
+  try{ dia=await carregarDia(iso); }catch(e){ app.innerHTML+=`<div class="vazio">Não consegui carregar este dia.</div>`; return;}
+  const pubs=dia.publicacoes.filter(p=>p.categorias.includes(key));
+  let h=`<button class="voltar" onclick="abrirCategoria('${key}')">‹ ${c.t}</button>
+    <div class="titulo-pagina">${dataBR(iso)} · ${dia.dia_semana}<div class="sub">${c.t} — ${pubs.length} publicação(ões)</div></div>`;
+  h+=pubs.map(cardPub).join('');
+  app.innerHTML=h;
+}
+
+function cardPub(p){
+  const reg = (p.regiao&&p.regiao.length)? p.regiao.map(r=>`<span class="bg reg">⭐ ${esc(r)}</span>`).join('') : '';
+  const cart = p.cartorio? `<span class="bg cart">🚨 SEU CARTÓRIO</span>`:'';
+  const fonte = p.fonte==='TJPI-ADM'?'Corregedoria':'DJEN';
+  const fav = isFav(p.id);
+  return `<div class="pub ${p.cartorio?'cart':''}" id="pub-${p.id}">
+    <div class="cab">
+      <div class="org">${esc(p.orgao)}</div>
+      <div class="meta">${esc(p.tipo)}${p.destinatario?(' · dirigida a: '+esc(p.destinatario)):''}</div>
+      <div class="badges">${cart}${reg}<span class="bg font">${fonte}</span></div>
+    </div>
+    <div class="corpo" id="c-${p.id}">${esc(p.texto)}</div>
+    <button class="vermais" onclick="toggleVer('${p.id}',this)">Ver tudo ▾</button>
+    <div class="acoes">
+      <button onclick='copiar(${JSON.stringify(p.id)})'>📋 Copiar</button>
+      <button class="${fav?'on':''}" onclick='salvar(${JSON.stringify(p.id)},this)'>${fav?'★ Salvo':'☆ Salvar'}</button>
+      ${p.link?`<button onclick="window.open('${p.link}','_blank')">🔗 Abrir</button>`:''}
+    </div></div>`;
+}
+
+function toggleVer(id,btn){
+  const c=document.getElementById('c-'+id);
+  c.classList.toggle('aberto');
+  btn.textContent = c.classList.contains('aberto')?'Recolher ▴':'Ver tudo ▾';
+}
+
+/* acha a publicacao (no cache de dias ou nos favoritos) */
+function achaPub(id){
+  for(const iso in cacheDia){
+    const p=cacheDia[iso].publicacoes.find(x=>x.id===id); if(p) return p;
+  }
+  return favs().find(f=>f.id===id);
+}
+function textoCompleto(p){
+  return `📋 ${INDICE.cartorio_nome?'':''}${p.orgao}\n`+
+         `Data: ${dataBR(p.data)} (${p.fonte==='TJPI-ADM'?'Corregedoria/Diário Administrativo':'DJEN'})\n`+
+         `Tipo: ${p.tipo}${p.destinatario?'\nDirigida a: '+p.destinatario:''}\n`+
+         (p.regiao&&p.regiao.length?`Região: ${p.regiao.join(', ')}\n`:'')+
+         `\n${p.texto}\n`+ (p.link?`\n🔗 ${p.link}`:'');
+}
+async function copiar(id){
+  const p=achaPub(id); if(!p)return;
+  const txt=textoCompleto(p);
+  try{ await navigator.clipboard.writeText(txt); toast('📋 Publicação copiada'); }
+  catch(e){
+    const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta);
+    ta.select(); try{document.execCommand('copy'); toast('📋 Copiada');}catch(_){toast('Não consegui copiar');}
+    ta.remove();
+  }
+}
+function salvar(id,btn){
+  const p=achaPub(id); if(!p)return;
+  const agora=toggleFav(p);
+  btn.classList.toggle('on',agora); btn.textContent=agora?'★ Salvo':'☆ Salvar';
+}
+
+/* -------------- SALVOS -------------- */
+function abrirSalvos(){
+  window.scrollTo(0,0);
+  const a=favs();
+  let h=`<button class="voltar" onclick="home()">‹ Início</button>
+    <div class="titulo-pagina">⭐ Salvos<div class="sub">${a.length} publicação(ões) guardada(s)</div></div>`;
+  h += a.length? a.map(cardPub).join('') : `<div class="vazio">Você ainda não salvou nenhuma publicação.<br>Toque em ☆ Salvar numa publicação.</div>`;
+  app.innerHTML=h;
+}
+
+/* -------------- CARTORIO (alerta) -------------- */
+async function abrirCartorio(){
+  window.scrollTo(0,0);
+  app.innerHTML=`<button class="voltar" onclick="home()">‹ Início</button>
+    <div class="titulo-pagina">🚨 Seu cartório<div class="sub">Publicações que citam a 2ª Serventia de Bom Jesus</div></div>
+    <div class="carregando">Procurando…</div>`;
+  const dias=(INDICE.dias||[]).filter(d=>(d.cartorio||0)>0);
+  let pubs=[];
+  for(const d of dias){ try{const j=await carregarDia(d.data); pubs=pubs.concat(j.publicacoes.filter(p=>p.cartorio));}catch(e){} }
+  let h=`<button class="voltar" onclick="home()">‹ Início</button>
+    <div class="titulo-pagina">🚨 Seu cartório<div class="sub">${pubs.length} publicação(ões)</div></div>`;
+  h += pubs.length? pubs.map(cardPub).join('') : `<div class="vazio">Nenhuma publicação do seu cartório nos últimos dias. ✅</div>`;
+  app.innerHTML=h;
+}
+
+/* -------------- INICIO -------------- */
+(async function(){
+  try{
+    const r=await fetch('index.json',{cache:'no-store'}); INDICE=await r.json();
+    document.getElementById('atualizado').textContent='Atualizado em '+(INDICE.atualizado_em||'—');
+    home();
+  }catch(e){
+    app.innerHTML=`<div class="vazio">Não consegui carregar os dados.<br><small>${esc(String(e))}</small></div>`;
+  }
+})();
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+</script>
+</body>
+</html>
