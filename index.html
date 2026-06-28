@@ -184,6 +184,21 @@ function toast(msg){
   clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1600);
 }
 function esc(s){return (s||'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));}
+
+// Destaca em negrito os pontos principais. Recebe texto JA escapado (sem < > crus);
+// so insere <b>...</b>. Os "corre-textos" usam [^<] p/ nunca entrar numa tag.
+function realce(t){
+  // 1) Serventia / cartorio / vara / comarca / municipio (frases compostas)
+  t = t.replace(/((?:\d+[ªa]\s*)?(?:Serventias? Extrajudici(?:al|ais)|Tabelionatos?|Tabeli[ãa]o|Cart[óo]rios?|Of[íi]cio[^.,;:\n<]{0,28}|Registro de Im[óo]veis|Registro Civil|Registro de T[íi]tulos[^.,;:\n<]{0,20}|Vara [^.,;:\n<]{0,42}|Comarca de [A-ZÀ-Ü][^.,;:\n<]{0,28}|Munic[íi]pio de [A-ZÀ-Ü][^.,;:\n<]{0,28}))/g,'<b>$1</b>');
+  // 2) Objeto: CLASSE / ASSUNTO / NATUREZA / ACAO
+  t = t.replace(/((?:CLASSE|ASSUNTO|NATUREZA|A[ÇC][ÃA]O)\s*[:\-]\s*[^\n(<]{3,90})/gi,'<b>$1</b>');
+  // 3) Providencias (determinacoes/atos) e prazos
+  t = t.replace(/\b(DETERMIN[OA][^.\n<]{0,2}|INTIME[MN]?-SE|CITE[MN]?-SE|EXPE[ÇC]A[MN]?-SE|CUMPRA-SE|PUBLIQUE-SE|REGISTRE-SE|DEFIRO|INDEFIRO|HOMOLOGO|DESPACHO|DECIS[ÃA]O|SENTEN[ÇC]A|MANDADO|EDITAL|PROVIMENTO|PORTARIA|NOTIFICA[ÇC][ÃA]O)\b/g,'<b>$1</b>');
+  t = t.replace(/((?:no\s+)?prazo de\s+\d+[^.\n<]{0,16}dias?)/gi,'<b>$1</b>');
+  // 4) Cidades da regiao (por ultimo; aninhar negrito e' inofensivo)
+  t = t.replace(/(Bom Jesus|Currais|Redenç[ãa]o do Gurgu[ée]ia|Redencao do Gurgueia|Cristino Castro)/g,'<b>$1</b>');
+  return t;
+}
 function dataBR(iso){const[a,m,d]=iso.split('-');return `${d}/${m}/${a}`;}
 
 async function carregarDia(iso){
@@ -268,7 +283,7 @@ function cardPub(p){
       <div class="meta">${esc(p.tipo)}${p.destinatario?(' · dirigida a: '+esc(p.destinatario)):''}</div>
       <div class="badges">${cart}${reg}<span class="bg font">${fonte}</span></div>
     </div>
-    <div class="corpo" id="c-${p.id}">${esc(p.texto)}</div>
+    <div class="corpo" id="c-${p.id}">${realce(esc(p.texto))}</div>
     <button class="vermais" onclick="toggleVer('${p.id}',this)">Ver tudo ▾</button>
     <div class="acoes">
       <button onclick='copiar(${JSON.stringify(p.id)})'>📋 Copiar</button>
