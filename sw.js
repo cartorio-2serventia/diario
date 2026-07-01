@@ -1,6 +1,6 @@
 // Service worker: rede primeiro (sempre a versao mais nova quando online),
 // com cache de reserva para abrir mesmo sem internet.
-const CACHE = 'serventia-bj-v3';
+const CACHE = 'serventia-bj-v4';
 
 self.addEventListener('install', e => { self.skipWaiting(); });
 self.addEventListener('activate', e => {
