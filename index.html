@@ -160,9 +160,10 @@ footer{text-align:center;color:var(--suave2);font-size:11px;padding:26px 16px;}
 <script>
 const CATS = [
   {key:'extrajudicial',      ic:'🏛️', t:'Extrajudicial — Corregedoria', s:'Caderno administrativo do foro extrajudicial'},
-  {key:'judicial_bomjesus',  ic:'⚖️', t:'Judicial — Bom Jesus',          s:'Judiciário da comarca de Bom Jesus'},
-  {key:'judicial_currais',   ic:'⚖️', t:'Judicial — Currais',            s:'Judiciário da comarca de Currais'},
-  {key:'judicial_redencao',  ic:'⚖️', t:'Judicial — Redenção do Gurguéia', s:'Judiciário da comarca de Redenção do Gurguéia'},
+  {key:'judicial_serventia', ic:'⚖️', t:'Judicial — Serventia Extrajudicial', s:'Judicial que cita “serventia extrajudicial” (Bom Jesus, Currais e Redenção primeiro)'},
+  {key:'judicial_bomjesus',  ic:'📍', t:'↳ Bom Jesus',                   s:'Serventia extrajudicial citada em Bom Jesus'},
+  {key:'judicial_currais',   ic:'📍', t:'↳ Currais',                     s:'Serventia extrajudicial citada em Currais'},
+  {key:'judicial_redencao',  ic:'📍', t:'↳ Redenção do Gurguéia',        s:'Serventia extrajudicial citada em Redenção do Gurguéia'},
   {key:'fermojupi',          ic:'💰', t:'FERMOJUPI',                      s:'Publicações que envolvem o FERMOJUPI'},
 ];
 const CAT_MAP = Object.fromEntries(CATS.map(c=>[c.key,c]));
