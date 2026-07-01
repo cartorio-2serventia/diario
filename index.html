@@ -284,7 +284,7 @@ function cardPub(p){
       <div class="badges">${cart}${reg}<span class="bg font">${fonte}</span></div>
     </div>
     <div class="corpo" id="c-${p.id}">${realce(esc(p.texto))}</div>
-    <button class="vermais" onclick="toggleVer('${p.id}',this)">Ver tudo ▾</button>
+    <button class="vermais" onclick="toggleVer(this)">Ver tudo ▾</button>
     <div class="acoes">
       <button onclick='copiar(${JSON.stringify(p.id)})'>📋 Copiar</button>
       <button class="${fav?'on':''}" onclick='salvar(${JSON.stringify(p.id)},this)'>${fav?'★ Salvo':'☆ Salvar'}</button>
@@ -292,8 +292,9 @@ function cardPub(p){
     </div></div>`;
 }
 
-function toggleVer(id,btn){
-  const c=document.getElementById('c-'+id);
+function toggleVer(btn){
+  const c=btn.previousElementSibling;   // o .corpo imediatamente acima do botao
+  if(!c) return;
   c.classList.toggle('aberto');
   btn.textContent = c.classList.contains('aberto')?'Recolher ▴':'Ver tudo ▾';
 }
