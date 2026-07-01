@@ -117,6 +117,10 @@ main{padding:0 16px;max-width:680px;margin:0 auto;}
   background:linear-gradient(180deg,rgba(255,255,255,0),#fff);}
 .vermais{display:block;width:100%;text-align:center;background:none;border:none;border-top:1px dashed var(--linha);
   color:var(--dourado-esc);font-weight:600;font-size:15px;padding:11px;cursor:pointer;}
+/* botao "Recolher" tambem no TOPO: so aparece quando a publicacao esta aberta */
+.vermais.topo{display:none;border-top:none;border-bottom:1px dashed var(--linha);
+  background:var(--creme2);border-radius:0;}
+.pub.expandido .vermais.topo{display:block;}
 .acoes{display:flex;gap:8px;padding:11px 12px;background:var(--creme2);border-top:1px solid var(--linha);}
 .acoes button{
   flex:1;border:1px solid var(--linha);background:#fff;border-radius:10px;padding:12px 6px;
@@ -304,14 +308,15 @@ function cardPub(p){
   const cart = p.cartorio? `<span class="bg cart">🚨 SEU CARTÓRIO</span>`:'';
   const fonte = p.fonte==='TJPI-ADM'?'Corregedoria':'DJEN';
   const fav = isFav(p.id);
-  return `<div class="pub ${p.cartorio?'cart':''}" id="pub-${p.id}">
+  return `<div class="pub expandido ${p.cartorio?'cart':''}" id="pub-${p.id}">
     <div class="cab">
       <div class="org">${esc(p.orgao)}</div>
       <div class="meta">${esc(p.tipo)}${p.destinatario?(' · dirigida a: '+esc(p.destinatario)):''}</div>
       <div class="badges">${cart}${reg}<span class="bg font">${fonte}</span></div>
     </div>
+    <button class="vermais topo" onclick="toggleVer('${p.id}')">Recolher ▴</button>
     <div class="corpo aberto" id="c-${p.id}">${realce(esc(p.texto))}</div>
-    <button class="vermais" onclick="toggleVer(this)">Recolher ▴</button>
+    <button class="vermais" onclick="toggleVer('${p.id}')">Recolher ▴</button>
     <div class="acoes">
       <button onclick='copiar(${JSON.stringify(p.id)})'>📋 Copiar</button>
       <button class="${fav?'on':''}" onclick='salvar(${JSON.stringify(p.id)},this)'>${fav?'★ Salvo':'☆ Salvar'}</button>
@@ -319,11 +324,16 @@ function cardPub(p){
     </div></div>`;
 }
 
-function toggleVer(btn){
-  const c=btn.previousElementSibling;   // o .corpo imediatamente acima do botao
-  if(!c) return;
+function toggleVer(id){
+  const c=document.getElementById('c-'+id); if(!c) return;
+  const pub=document.getElementById('pub-'+id);
+  const vaiAbrir=!c.classList.contains('aberto');
   c.classList.toggle('aberto');
-  btn.textContent = c.classList.contains('aberto')?'Recolher ▴':'Ver tudo ▾';
+  if(pub){
+    pub.classList.toggle('expandido', c.classList.contains('aberto'));
+    pub.querySelectorAll('.vermais').forEach(b=>b.textContent = c.classList.contains('aberto')?'Recolher ▴':'Ver tudo ▾');
+    if(!vaiAbrir) pub.scrollIntoView({block:'start'});   // ao recolher, volta ao inicio da publicacao
+  }
 }
 
 /* acha a publicacao (no cache de dias ou nos favoritos) */
