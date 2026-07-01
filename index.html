@@ -310,8 +310,8 @@ function cardPub(p){
       <div class="meta">${esc(p.tipo)}${p.destinatario?(' · dirigida a: '+esc(p.destinatario)):''}</div>
       <div class="badges">${cart}${reg}<span class="bg font">${fonte}</span></div>
     </div>
-    <div class="corpo" id="c-${p.id}">${realce(esc(p.texto))}</div>
-    <button class="vermais" onclick="toggleVer(this)">Ver tudo ▾</button>
+    <div class="corpo aberto" id="c-${p.id}">${realce(esc(p.texto))}</div>
+    <button class="vermais" onclick="toggleVer(this)">Recolher ▴</button>
     <div class="acoes">
       <button onclick='copiar(${JSON.stringify(p.id)})'>📋 Copiar</button>
       <button class="${fav?'on':''}" onclick='salvar(${JSON.stringify(p.id)},this)'>${fav?'★ Salvo':'☆ Salvar'}</button>
