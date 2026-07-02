@@ -1,19 +1,14 @@
-// Service worker: rede primeiro (sempre a versao mais nova quando online),
-// com cache de reserva para abrir mesmo sem internet.
-const CACHE = 'serventia-bj-v5';
-
+// KILL-SWITCH: este service worker se auto-remove e limpa todos os caches.
+// (Os SWs antigos presos nos celulares serao substituidos por este e sumirao.)
 self.addEventListener('install', e => { self.skipWaiting(); });
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(ks =>
-    Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil((async () => {
+    try { const ks = await caches.keys(); await Promise.all(ks.map(k => caches.delete(k))); } catch (_) {}
+    try { await self.registration.unregister(); } catch (_) {}
+    try {
+      const cs = await self.clients.matchAll({ type: 'window' });
+      cs.forEach(c => c.navigate(c.url));   // recarrega as janelas abertas ja SEM o SW
+    } catch (_) {}
+  })());
 });
-self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  e.respondWith(
-    fetch(e.request).then(resp => {
-      const copia = resp.clone();
-      caches.open(CACHE).then(c => c.put(e.request, copia)).catch(() => {});
-      return resp;
-    }).catch(() => caches.match(e.request))
-  );
-});
+// sem handler de fetch: tudo vai direto para a rede

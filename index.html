@@ -395,11 +395,17 @@ async function abrirCartorio(){
 }
 
 /* -------------- INICIO / ATUALIZACAO -------------- */
+function fetchComTimeout(url, ms){
+  const ctl = new AbortController();
+  const t = setTimeout(()=>ctl.abort(), ms);
+  return fetch(url, {cache:'no-store', signal: ctl.signal}).finally(()=>clearTimeout(t));
+}
+
 async function atualizarDados(manual){
   const btn=document.getElementById('btn-atualizar');
   if(btn){btn.textContent='… buscando';btn.disabled=true;}
   try{
-    const r=await fetch('index.json?v='+Date.now(),{cache:'no-store'});
+    const r=await fetchComTimeout('index.json?v='+Date.now(), 15000);
     const novo=await r.json();
     const mudou = !INDICE || novo.atualizado_em!==INDICE.atualizado_em;
     INDICE=novo;
@@ -407,12 +413,14 @@ async function atualizarDados(manual){
     if(mudou){
       for(const k in cacheDia) delete cacheDia[k];   // dias tambem podem ter mudado
       // so re-renderiza sozinho se estiver na tela INICIAL (nao interrompe leitura)
-      if(manual || document.querySelector('.cards')) home();
+      if(manual || document.querySelector('.cards') || !document.querySelector('.pub,.dia')) home();
       toast('✅ Atualizado: '+INDICE.atualizado_em);
     } else if(manual){ toast('Já está na versão mais recente'); }
   }catch(e){
     if(manual) toast('Sem internet agora — tente de novo');
-    if(!INDICE) app.innerHTML=`<div class="vazio">Não consegui carregar os dados.<br><small>${esc(String(e))}</small></div>`;
+    if(!INDICE) app.innerHTML=`<div class="vazio">Não consegui carregar os dados agora.<br><br>
+      <button onclick="atualizarDados(true)" style="border:1.5px solid var(--dourado);color:var(--dourado-esc);
+      background:#fff;border-radius:12px;font-size:16px;font-weight:600;padding:12px 22px;">↻ Tentar de novo</button></div>`;
   }
   if(btn){btn.textContent='↻ Atualizar';btn.disabled=false;}
 }
@@ -420,8 +428,16 @@ atualizarDados(false);
 // iOS mantem o app "congelado" na memoria: ao voltar pro app, recarrega sozinho
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) atualizarDados(false); });
 window.addEventListener('pageshow',e=>{ if(e.persisted) atualizarDados(false); });
+
+// LIMPEZA: removemos o service worker (so causava tela presa/cache velho).
+// O sw.js publicado agora e' um kill-switch; aqui tambem desregistramos e
+// limpamos os caches de quem ainda tem a versao antiga instalada.
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').then(reg=>{ try{reg.update();}catch(_){}}).catch(()=>{});
+  navigator.serviceWorker.getRegistrations()
+    .then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{});
+}
+if(window.caches && caches.keys){
+  caches.keys().then(ks=>ks.forEach(k=>caches.delete(k))).catch(()=>{});
 }
 </script>
 </body>
