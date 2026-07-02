@@ -172,10 +172,13 @@ header .sub{font-size:13px;}
 <header>
   <div class="top">
     <div class="marca serif">2ª</div>
-    <div>
+    <div style="flex:1;min-width:0">
       <h1 class="serif">2ª Serventia de Bom Jesus/PI</h1>
       <div class="sub">Acompanhamento PJE-TJPI</div>
     </div>
+    <button id="btn-atualizar" onclick="atualizarDados(true)" title="Atualizar"
+      style="flex:0 0 auto;background:none;border:1.5px solid var(--dourado);color:var(--dourado);
+      border-radius:12px;font-size:15px;font-weight:600;padding:9px 13px;cursor:pointer;">↻ Atualizar</button>
   </div>
   <div class="atualizado" id="atualizado"></div>
 </header>
@@ -391,17 +394,35 @@ async function abrirCartorio(){
   app.innerHTML=h;
 }
 
-/* -------------- INICIO -------------- */
-(async function(){
+/* -------------- INICIO / ATUALIZACAO -------------- */
+async function atualizarDados(manual){
+  const btn=document.getElementById('btn-atualizar');
+  if(btn){btn.textContent='… buscando';btn.disabled=true;}
   try{
-    const r=await fetch('index.json',{cache:'no-store'}); INDICE=await r.json();
+    const r=await fetch('index.json?v='+Date.now(),{cache:'no-store'});
+    const novo=await r.json();
+    const mudou = !INDICE || novo.atualizado_em!==INDICE.atualizado_em;
+    INDICE=novo;
     document.getElementById('atualizado').textContent='Atualizado em '+(INDICE.atualizado_em||'—');
-    home();
+    if(mudou){
+      for(const k in cacheDia) delete cacheDia[k];   // dias tambem podem ter mudado
+      // so re-renderiza sozinho se estiver na tela INICIAL (nao interrompe leitura)
+      if(manual || document.querySelector('.cards')) home();
+      toast('✅ Atualizado: '+INDICE.atualizado_em);
+    } else if(manual){ toast('Já está na versão mais recente'); }
   }catch(e){
-    app.innerHTML=`<div class="vazio">Não consegui carregar os dados.<br><small>${esc(String(e))}</small></div>`;
+    if(manual) toast('Sem internet agora — tente de novo');
+    if(!INDICE) app.innerHTML=`<div class="vazio">Não consegui carregar os dados.<br><small>${esc(String(e))}</small></div>`;
   }
-})();
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+  if(btn){btn.textContent='↻ Atualizar';btn.disabled=false;}
+}
+atualizarDados(false);
+// iOS mantem o app "congelado" na memoria: ao voltar pro app, recarrega sozinho
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) atualizarDados(false); });
+window.addEventListener('pageshow',e=>{ if(e.persisted) atualizarDados(false); });
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').then(reg=>{ try{reg.update();}catch(_){}}).catch(()=>{});
+}
 </script>
 </body>
 </html>
