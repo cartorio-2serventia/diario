@@ -135,6 +135,10 @@ main{padding:0 16px;max-width:680px;margin:0 auto;}
   font-size:16px;font-weight:600;padding:14px 4px 4px;cursor:pointer;}
 .titulo-pagina{font-size:22px;font-weight:600;color:var(--grafite);margin:4px 4px 0;}
 .titulo-pagina .sub{font-size:14.5px;color:var(--suave);font-weight:400;margin-top:3px;}
+/* barra do caderno GRUDADA no topo: acompanha a rolagem das publicacoes */
+.grude{position:sticky;top:var(--htop,0px);z-index:40;background:var(--creme);
+  margin:0 -16px;padding:2px 16px 8px;border-bottom:1.5px solid var(--dourado);
+  box-shadow:0 4px 10px rgba(45,45,45,.06);}
 .vazio{text-align:center;color:var(--suave);padding:40px 20px;font-size:16px;}
 .carregando{text-align:center;color:var(--suave);padding:30px;font-size:14px;}
 footer{text-align:center;color:var(--suave2);font-size:11px;padding:26px 16px;}
@@ -278,8 +282,8 @@ function abrirCategoria(key){
   window.scrollTo(0,0);
   const c=CAT_MAP[key];
   const dias=(INDICE.dias||[]).filter(d=>(d.contagem[key]||0)>0);
-  let h=`<button class="voltar" onclick="home()">‹ Início</button>
-    <div class="titulo-pagina">${c.ic} ${c.t}<div class="sub">${c.s}</div></div>
+  let h=`<div class="grude"><button class="voltar" onclick="home()">‹ Início</button>
+    <div class="titulo-pagina">${c.ic} ${c.t}<div class="sub">${c.s}</div></div></div>
     <div class="secao-tit">Toque em um dia</div>`;
   if(!dias.length){ h+=`<div class="vazio">Sem publicações neste caderno nos últimos dias.</div>`; }
   dias.forEach(d=>{
@@ -294,14 +298,14 @@ function abrirCategoria(key){
 async function abrirDia(key,iso){
   window.scrollTo(0,0);
   const c=CAT_MAP[key];
-  app.innerHTML=`<button class="voltar" onclick="abrirCategoria('${key}')">‹ ${c.t}</button>
-    <div class="titulo-pagina">${dataBR(iso)}<div class="sub">${c.t}</div></div>
+  app.innerHTML=`<div class="grude"><button class="voltar" onclick="abrirCategoria('${key}')">‹ ${c.t}</button>
+    <div class="titulo-pagina">${dataBR(iso)}<div class="sub">${c.t}</div></div></div>
     <div class="carregando">Carregando…</div>`;
   let dia;
   try{ dia=await carregarDia(iso); }catch(e){ app.innerHTML+=`<div class="vazio">Não consegui carregar este dia.</div>`; return;}
   const pubs=dia.publicacoes.filter(p=>p.categorias.includes(key));
-  let h=`<button class="voltar" onclick="abrirCategoria('${key}')">‹ ${c.t}</button>
-    <div class="titulo-pagina">${dataBR(iso)} · ${dia.dia_semana}<div class="sub">${c.t} — ${pubs.length} publicação(ões)</div></div>`;
+  let h=`<div class="grude"><button class="voltar" onclick="abrirCategoria('${key}')">‹ ${c.t}</button>
+    <div class="titulo-pagina">${dataBR(iso)} · ${dia.dia_semana}<div class="sub">${c.t} — ${pubs.length} publicação(ões)</div></div></div>`;
   h+=pubs.map(cardPub).join('');
   app.innerHTML=h;
 }
@@ -373,8 +377,8 @@ function salvar(id,btn){
 function abrirSalvos(){
   window.scrollTo(0,0);
   const a=favs();
-  let h=`<button class="voltar" onclick="home()">‹ Início</button>
-    <div class="titulo-pagina">⭐ Salvos<div class="sub">${a.length} publicação(ões) guardada(s)</div></div>`;
+  let h=`<div class="grude"><button class="voltar" onclick="home()">‹ Início</button>
+    <div class="titulo-pagina">⭐ Salvos<div class="sub">${a.length} publicação(ões) guardada(s)</div></div></div>`;
   h += a.length? a.map(cardPub).join('') : `<div class="vazio">Você ainda não salvou nenhuma publicação.<br>Toque em ☆ Salvar numa publicação.</div>`;
   app.innerHTML=h;
 }
@@ -388,8 +392,8 @@ async function abrirCartorio(){
   const dias=(INDICE.dias||[]).filter(d=>(d.cartorio||0)>0);
   let pubs=[];
   for(const d of dias){ try{const j=await carregarDia(d.data); pubs=pubs.concat(j.publicacoes.filter(p=>p.cartorio));}catch(e){} }
-  let h=`<button class="voltar" onclick="home()">‹ Início</button>
-    <div class="titulo-pagina">🚨 Seu cartório<div class="sub">${pubs.length} publicação(ões)</div></div>`;
+  let h=`<div class="grude"><button class="voltar" onclick="home()">‹ Início</button>
+    <div class="titulo-pagina">🚨 Seu cartório<div class="sub">${pubs.length} publicação(ões)</div></div></div>`;
   h += pubs.length? pubs.map(cardPub).join('') : `<div class="vazio">Nenhuma publicação do seu cartório nos últimos dias. ✅</div>`;
   app.innerHTML=h;
 }
@@ -425,6 +429,14 @@ async function atualizarDados(manual){
   if(btn){btn.textContent='↻ Atualizar';btn.disabled=false;}
 }
 atualizarDados(false);
+// altura do cabecalho -> a barra .grude gruda logo abaixo dele
+function ajustaGrude(){
+  const hd=document.querySelector('header');
+  if(hd) document.documentElement.style.setProperty('--htop', hd.offsetHeight+'px');
+}
+window.addEventListener('load', ajustaGrude);
+window.addEventListener('resize', ajustaGrude);
+setTimeout(ajustaGrude, 400);
 // iOS mantem o app "congelado" na memoria: ao voltar pro app, recarrega sozinho
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) atualizarDados(false); });
 window.addEventListener('pageshow',e=>{ if(e.persisted) atualizarDados(false); });
