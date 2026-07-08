@@ -362,14 +362,27 @@ def reconstruir_indice():
 
 
 def main():
+    import time as _t
+    # ORCAMENTO de tempo: na nuvem (TJPI lento) a coleta nunca pode travar.
+    # Ajustavel por env MINUTOS_LIMITE (o workflow usa 6 min). 0 = sem limite.
+    minutos = float(os.environ.get("MINUTOS_LIMITE", "0") or "0")
+    fontes.LIMITE_TEMPO = (_t.monotonic() + minutos * 60) if minutos > 0 else None
+
     hoje = date.today()
     ini = hoje - timedelta(days=DIAS_JANELA)
-    print(f"Coletando para o app de {ini} ate {hoje} ...")
+    print(f"Coletando para o app de {ini} ate {hoje} "
+          f"(limite {minutos or 'sem'} min) ...", flush=True)
     pubs = []
-    print("  -> DJEN ...")
-    pubs += coletar_djen(ini, hoje)
-    print("  -> TJPI Administrativo ...")
-    pubs += coletar_tjpi(ini, hoje)
+    print("  -> DJEN ...", flush=True)
+    try:
+        pubs += coletar_djen(ini, hoje)
+    except Exception as e:
+        print(f"  [DJEN] interrompido: {e}", flush=True)
+    print(f"  -> TJPI Administrativo ... ({len(pubs)} ate aqui)", flush=True)
+    try:
+        pubs += coletar_tjpi(ini, hoje)
+    except Exception as e:
+        print(f"  [TJPI] interrompido: {e}", flush=True)
 
     # dedup por conteudo
     vistos, unicos = set(), []

@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Coletar diario
-        run: python _motor/rodar_nuvem.py
+        run: MINUTOS_LIMITE=6 python _motor/rodar_nuvem.py
       - name: Publicar se houver novidade
         run: |
           git config user.name "robo-diario"

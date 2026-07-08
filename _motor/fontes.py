@@ -77,21 +77,31 @@ def restrito_a_regiao(tipo: str, texto_norm: str) -> bool:
 ANCORAS_BUSCA = ["serventia", "extrajudicial"]
 
 
-def _http_get(url: str, timeout: int = 60) -> bytes:
-    """GET com 3 tentativas e pausa crescente (rede instavel / limite do
-    servidor nao podem derrubar a verificacao das 21h)."""
+# Na NUVEM (GitHub Actions) o portal do TJPI responde muito devagar e faz a
+# coleta travar. Estas variaveis deixam o HTTP mais curto e permitem um
+# ORCAMENTO DE TEMPO global (setado por quem chama) — passou do prazo, cada
+# GET desiste na hora e a coleta segue com o que ja tem (merge preserva o resto).
+LIMITE_TEMPO = None          # time.monotonic() maximo; None = sem limite
+
+
+def _http_get(url: str, timeout: int = 25) -> bytes:
+    """GET com poucas tentativas rapidas + respeito ao ORCAMENTO de tempo."""
     import time as _t
+    if LIMITE_TEMPO is not None and _t.monotonic() > LIMITE_TEMPO:
+        raise TimeoutError("orcamento de tempo esgotado")
     ultimo_erro = None
-    for tentativa in range(3):
+    for tentativa in range(2):
         try:
             req = urllib.request.Request(url, headers=UA)
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 dados = r.read()
-            _t.sleep(0.4)   # gentileza com o servidor (evita corte de conexao)
+            _t.sleep(0.3)
             return dados
         except Exception as e:
             ultimo_erro = e
-            _t.sleep(6 * (tentativa + 1))   # espera 6s, depois 12s
+            if LIMITE_TEMPO is not None and _t.monotonic() > LIMITE_TEMPO:
+                break
+            _t.sleep(3 * (tentativa + 1))
     raise ultimo_erro
 
 
