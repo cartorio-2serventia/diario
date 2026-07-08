@@ -193,6 +193,7 @@ header .sub{font-size:13px;}
 <div class="toast" id="toast"></div>
 
 <script>
+const APP_VERSAO = 'v7';   // sobe a cada mudanca do app — confere no rodape do cabecalho
 const CATS = [
   {key:'extrajudicial',      ic:'🏛️', t:'Extrajudicial — Corregedoria', s:'Caderno administrativo do foro extrajudicial'},
   {key:'judicial_serventia', ic:'⚖️', t:'Judicial — Serventia Extrajudicial', s:'Judicial que cita “serventia extrajudicial” (Bom Jesus, Currais e Redenção primeiro)'},
@@ -413,7 +414,7 @@ async function atualizarDados(manual){
     const novo=await r.json();
     const mudou = !INDICE || novo.atualizado_em!==INDICE.atualizado_em;
     INDICE=novo;
-    document.getElementById('atualizado').textContent='Atualizado em '+(INDICE.atualizado_em||'—');
+    document.getElementById('atualizado').textContent='Atualizado em '+(INDICE.atualizado_em||'—')+'  ·  app '+APP_VERSAO;
     if(mudou){
       for(const k in cacheDia) delete cacheDia[k];   // dias tambem podem ter mudado
       // so re-renderiza sozinho se estiver na tela INICIAL (nao interrompe leitura)
@@ -429,6 +430,8 @@ async function atualizarDados(manual){
   if(btn){btn.textContent='↻ Atualizar';btn.disabled=false;}
 }
 atualizarDados(false);
+// enquanto o app estiver aberto na tela, revalida a cada 5 minutos
+setInterval(()=>{ if(!document.hidden) atualizarDados(false); }, 5*60*1000);
 // altura do cabecalho -> a barra .grude gruda logo abaixo dele
 function ajustaGrude(){
   const hd=document.querySelector('header');

@@ -1,0 +1,37 @@
+name: Atualizar diario
+on:
+  schedule:
+    # de hora em hora, 07h-21h de Brasilia (10-23 UTC até 0), seg-sab
+    - cron: '5 10-23 * * 1-6'
+    - cron: '5 0 * * 2-6'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: atualizar
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Coletar diario
+        run: python _motor/rodar_nuvem.py
+      - name: Publicar se houver novidade
+        run: |
+          git config user.name "robo-diario"
+          git config user.email "robo@2serventia"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Sem novidades."
+          else
+            git commit -m "Atualiza diario (nuvem)"
+            git pull --rebase origin main
+            git push
+          fi
