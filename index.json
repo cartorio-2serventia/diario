@@ -1,5 +1,5 @@
 {
- "atualizado_em": "09/07/2026 10:35",
+ "atualizado_em": "09/07/2026 10:45",
  "cartorio_nome": "2a Serventia Extrajudicial de Tabelionato de Bom Jesus/PI",
  "dias": [
   {
@@ -11,7 +11,7 @@
     "judicial_bomjesus": 0,
     "judicial_currais": 0,
     "judicial_redencao": 0,
-    "judicial_serventia": 39
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },
@@ -21,10 +21,10 @@
    "contagem": {
     "extrajudicial": 8,
     "fermojupi": 5,
-    "judicial_bomjesus": 1,
-    "judicial_currais": 0,
-    "judicial_redencao": 1,
-    "judicial_serventia": 29
+    "judicial_bomjesus": 0,
+    "judicial_currais": 1,
+    "judicial_redencao": 0,
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },
@@ -37,7 +37,7 @@
     "judicial_bomjesus": 0,
     "judicial_currais": 0,
     "judicial_redencao": 0,
-    "judicial_serventia": 24
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },
@@ -47,10 +47,10 @@
    "contagem": {
     "extrajudicial": 9,
     "fermojupi": 5,
-    "judicial_bomjesus": 1,
+    "judicial_bomjesus": 0,
     "judicial_currais": 0,
     "judicial_redencao": 0,
-    "judicial_serventia": 34
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },
@@ -63,7 +63,7 @@
     "judicial_bomjesus": 0,
     "judicial_currais": 0,
     "judicial_redencao": 0,
-    "judicial_serventia": 21
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },
@@ -74,9 +74,9 @@
     "extrajudicial": 22,
     "fermojupi": 18,
     "judicial_bomjesus": 0,
-    "judicial_currais": 0,
+    "judicial_currais": 3,
     "judicial_redencao": 0,
-    "judicial_serventia": 17
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },
@@ -89,7 +89,7 @@
     "judicial_bomjesus": 0,
     "judicial_currais": 0,
     "judicial_redencao": 0,
-    "judicial_serventia": 28
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },
@@ -98,11 +98,11 @@
    "dia_semana": "terca-feira",
    "contagem": {
     "extrajudicial": 8,
-    "fermojupi": 7,
-    "judicial_bomjesus": 1,
-    "judicial_currais": 1,
+    "fermojupi": 6,
+    "judicial_bomjesus": 0,
+    "judicial_currais": 0,
     "judicial_redencao": 0,
-    "judicial_serventia": 9
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },
@@ -111,11 +111,11 @@
    "dia_semana": "segunda-feira",
    "contagem": {
     "extrajudicial": 17,
-    "fermojupi": 15,
+    "fermojupi": 14,
     "judicial_bomjesus": 0,
-    "judicial_currais": 0,
+    "judicial_currais": 1,
     "judicial_redencao": 0,
-    "judicial_serventia": 26
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },
@@ -127,8 +127,8 @@
     "fermojupi": 5,
     "judicial_bomjesus": 0,
     "judicial_currais": 0,
-    "judicial_redencao": 1,
-    "judicial_serventia": 14
+    "judicial_redencao": 0,
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },
@@ -141,7 +141,7 @@
     "judicial_bomjesus": 0,
     "judicial_currais": 0,
     "judicial_redencao": 0,
-    "judicial_serventia": 17
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },
@@ -154,7 +154,7 @@
     "judicial_bomjesus": 0,
     "judicial_currais": 0,
     "judicial_redencao": 0,
-    "judicial_serventia": 11
+    "judicial_serventia": 0
    },
    "cartorio": 0
   },

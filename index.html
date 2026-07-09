@@ -193,14 +193,13 @@ header .sub{font-size:13px;}
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VERSAO = 'v7';   // sobe a cada mudanca do app — confere no rodape do cabecalho
+const APP_VERSAO = 'v8';   // sobe a cada mudanca do app — confere no rodape do cabecalho
 const CATS = [
-  {key:'extrajudicial',      ic:'🏛️', t:'Extrajudicial — Corregedoria', s:'Caderno administrativo do foro extrajudicial'},
-  {key:'judicial_serventia', ic:'⚖️', t:'Judicial — Serventia Extrajudicial', s:'Judicial que cita “serventia extrajudicial” (Bom Jesus, Currais e Redenção primeiro)'},
-  {key:'judicial_bomjesus',  ic:'📍', t:'↳ Bom Jesus',                   s:'Serventia extrajudicial citada em Bom Jesus'},
-  {key:'judicial_currais',   ic:'📍', t:'↳ Currais',                     s:'Serventia extrajudicial citada em Currais'},
-  {key:'judicial_redencao',  ic:'📍', t:'↳ Redenção do Gurguéia',        s:'Serventia extrajudicial citada em Redenção do Gurguéia'},
-  {key:'fermojupi',          ic:'💰', t:'FERMOJUPI',                      s:'Publicações que envolvem o FERMOJUPI'},
+  {key:'judicial_bomjesus',  ic:'📍', t:'Bom Jesus',            s:'Serventia extrajudicial em Bom Jesus'},
+  {key:'judicial_currais',   ic:'📍', t:'Currais',              s:'Serventia extrajudicial em Currais'},
+  {key:'judicial_redencao',  ic:'📍', t:'Redenção do Gurguéia', s:'Serventia extrajudicial em Redenção do Gurguéia'},
+  {key:'extrajudicial',      ic:'🏛️', t:'Corregedoria do Foro Extrajudicial', s:'Atos administrativos do foro extrajudicial'},
+  {key:'fermojupi',          ic:'💰', t:'FERMOJUPI',            s:'Publicações que envolvem o FERMOJUPI'},
 ];
 const CAT_MAP = Object.fromEntries(CATS.map(c=>[c.key,c]));
 const app = document.getElementById('app');
@@ -284,14 +283,20 @@ function abrirCategoria(key){
   const c=CAT_MAP[key];
   const dias=(INDICE.dias||[]).filter(d=>(d.contagem[key]||0)>0);
   let h=`<div class="grude"><button class="voltar" onclick="home()">‹ Início</button>
-    <div class="titulo-pagina">${c.ic} ${c.t}<div class="sub">${c.s}</div></div></div>
-    <div class="secao-tit">Toque em um dia</div>`;
-  if(!dias.length){ h+=`<div class="vazio">Sem publicações neste caderno nos últimos dias.</div>`; }
-  dias.forEach(d=>{
-    h+=`<div class="dia" onclick="abrirDia('${key}','${d.data}')">
-      <div><div class="d">${dataBR(d.data)}</div><div class="dow">${d.dia_semana}</div></div>
-      <div class="n">${d.contagem[key]}</div></div>`;
-  });
+    <div class="titulo-pagina">${c.ic} ${c.t}<div class="sub">${c.s}</div></div></div>`;
+  const hojeISO=INDICE.dias&&INDICE.dias[0]?INDICE.dias[0].data:'';
+  if(!dias.length){
+    h+=`<div class="vazio">📅 Na data de <b>${hojeISO?dataBR(hojeISO):'hoje'}</b> não houve publicações
+      com “serventia extrajudicial” em <b>${esc(c.t)}</b>.<br><br>
+      <span style="font-size:38px;font-family:'EB Garamond',serif;color:var(--dourado-esc)">0</span></div>`;
+  } else {
+    h+=`<div class="secao-tit">Toque em um dia</div>`;
+    dias.forEach(d=>{
+      h+=`<div class="dia" onclick="abrirDia('${key}','${d.data}')">
+        <div><div class="d">${dataBR(d.data)}</div><div class="dow">${d.dia_semana}</div></div>
+        <div class="n">${d.contagem[key]}</div></div>`;
+    });
+  }
   app.innerHTML=h;
 }
 
