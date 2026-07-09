@@ -61,29 +61,29 @@ def _tem(termos, txt):
 
 # ------------------------------------------------------------ classificacao
 def classificar(fonte, orgao_n, texto_n):
-    """Botoes em que a publicacao entra. REGRA FINAL (08/07/2026):
-    NADA de JUDICIAL (o DJEN inteiro fica de fora — pedido do usuario).
-    So o DIARIO ADMINISTRATIVO / CORREGEDORIA DO FORO EXTRAJUDICIAL.
-      - extrajudicial : ato administrativo (tem o termo OU e' CorExtra).
-      - bom jesus / currais / redencao : EXIGEM o termo
-        'serventia(s) extrajudicial(is)' + a cidade (FILTRO FORTE).
-      - fermojupi : FERMOJUPI + tem o termo.
-    (As chaves mantem o prefixo 'judicial_' so por compatibilidade do indice;
-     o conteudo NAO e' mais judicial.)"""
-    if fonte != "TJPI-ADM":
-        return []                    # SEM JUDICIAL — DJEN nao entra
+    """Botoes em que a publicacao entra. REGRA (09/07/2026):
+      - ABAS DE CIDADE (Bom Jesus/Currais/Redencao): QUALQUER fonte
+        (extrajudicial OU judicial), desde que tenha o termo
+        'serventia(s) extrajudicial(is)' + a cidade. NAO existe feed
+        judicial geral — judicial so entra se for de uma dessas 3 cidades.
+      - extrajudicial : SO administrativo (termo OU CorExtra).
+      - fermojupi     : SO administrativo (FERMOJUPI + termo).
+    (Chaves mantem 'judicial_' por compatibilidade do indice.)"""
     tem_serv = _tem(SERV_N, texto_n)
     cats = []
-    if tem_serv or _tem(COREXTRA_N, texto_n):
-        cats.append("extrajudicial")
-    if tem_serv:                      # abas de cidade: termo + cidade
+    # abas de cidade — admin OU judicial, com termo + cidade
+    if tem_serv:
         if "bom jesus" in texto_n or "bom jesus" in orgao_n:
             cats.append("judicial_bomjesus")
         if "currais" in texto_n or "currais" in orgao_n:
             cats.append("judicial_currais")
         if "gurgueia" in texto_n or "gurgueia" in orgao_n:
             cats.append("judicial_redencao")
-        if "fermojupi" in texto_n:
+    # cadernos administrativos: SO do Diario Administrativo (nunca judicial)
+    if fonte == "TJPI-ADM":
+        if tem_serv or _tem(COREXTRA_N, texto_n):
+            cats.append("extrajudicial")
+        if tem_serv and "fermojupi" in texto_n:
             cats.append("fermojupi")
     return cats
 
@@ -117,12 +117,9 @@ def _registro(fonte, data_iso, orgao, tipo, link, texto, dest=""):
 # ------------------------------------------------------------------- DJEN
 def coletar_djen(dt_ini, dt_fim):
     achados = {}
-    # ATENCAO: a busca do DJEN NAO entende plural — "serventia" nao acha
-    # "serventias" (auditoria de 04/07 pegou 3 publicacoes perdidas assim).
-    # Por isso as ancoras tem singular E plural.
-    ancoras = ["Bom Jesus", "Currais", "Redenção do Gurguéia",
-               "serventia", "serventias", "extrajudicial", "extrajudiciais",
-               "fermojupi"]
+    # Do DJEN so interessa o que for das 3 CIDADES (o judicial geral nao entra).
+    # Buscamos por cidade; classificar() exige tambem o termo serventia extrajud.
+    ancoras = ["Bom Jesus", "Currais", "Redenção do Gurguéia", "Redencao do Gurgueia"]
     for termo in ancoras:
         pagina = 1
         while True:
@@ -371,8 +368,12 @@ def main():
     print(f"Coletando para o app de {ini} ate {hoje} "
           f"(limite {minutos or 'sem'} min) ...", flush=True)
     pubs = []
-    # SEM JUDICIAL: o DJEN (comunicacoes judiciais) NAO e' mais coletado.
-    print("  -> Diario Administrativo / Corregedoria do Foro Extrajudicial ...", flush=True)
+    print("  -> DJEN (so das 3 cidades, com o termo) ...", flush=True)
+    try:
+        pubs += coletar_djen(ini, hoje)
+    except Exception as e:
+        print(f"  [DJEN] interrompido: {e}", flush=True)
+    print(f"  -> Diario Administrativo / Corregedoria ... ({len(pubs)} ate aqui)", flush=True)
     try:
         pubs += coletar_tjpi(ini, hoje)
     except Exception as e:
