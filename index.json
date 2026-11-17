@@ -1,7 +1,20 @@
 {
- "atualizado_em": "16/11/2026 21:01",
+ "atualizado_em": "17/11/2026 09:30",
  "cartorio_nome": "2a Serventia Extrajudicial de Tabelionato de Bom Jesus/PI",
  "dias": [
+  {
+   "data": "2026-11-17",
+   "dia_semana": "terca-feira",
+   "contagem": {
+    "extrajudicial": 0,
+    "fermojupi": 0,
+    "judicial_bomjesus": 6,
+    "judicial_currais": 1,
+    "judicial_redencao": 0,
+    "judicial_serventia": 0
+   },
+   "cartorio": 0
+  },
   {
    "data": "2026-11-16",
    "dia_semana": "segunda-feira",
@@ -544,19 +557,6 @@
     "judicial_bomjesus": 0,
     "judicial_currais": 0,
     "judicial_redencao": 0,
-    "judicial_serventia": 0
-   },
-   "cartorio": 0
-  },
-  {
-   "data": "2026-09-17",
-   "dia_semana": "quinta-feira",
-   "contagem": {
-    "extrajudicial": 4,
-    "fermojupi": 2,
-    "judicial_bomjesus": 0,
-    "judicial_currais": 1,
-    "judicial_redencao": 1,
     "judicial_serventia": 0
    },
    "cartorio": 0
